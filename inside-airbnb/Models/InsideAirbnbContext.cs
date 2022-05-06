@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace inside_airbnb.Models
 {
-    public partial class InsideAirbnbContect : DbContext
+    public partial class InsideAirbnbContext : DbContext
     {
-        public InsideAirbnbContect()
+        public InsideAirbnbContext()
         {
         }
 
-        public InsideAirbnbContect(DbContextOptions<InsideAirbnbContect> options)
+        public InsideAirbnbContext(DbContextOptions<InsideAirbnbContext> options)
             : base(options)
         {
         }
