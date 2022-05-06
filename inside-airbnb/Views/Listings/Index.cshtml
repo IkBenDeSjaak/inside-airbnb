@@ -1,4 +1,4 @@
-﻿@model IEnumerable<inside_airbnb.Models.Listing>
+﻿@model ListingsViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,7 +9,8 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<div id="map" style="width: 100%; height: 500px;"></div>
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -128,4 +129,78 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaWtiZW5kZXNqYWFrIiwiYSI6ImNsMnVjdnRrZDAwdWcza296Zm1zN2pnbXoifQ.FrZP3oNq-RBL9RMJES4xsQ';
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [4.902318081500600, 52.37851665631290],
+            zoom: 12,
+        });
+        map.on('load', () => {
+            map.addSource('listings', {
+                type: 'geojson',
+                data: @Json.Serialize(Model.Listings),
+                cluster: true,
+                clusterMaxZoom: 14,
+                clusterRadius: 50
+            });
+            map.addLayer({
+                id: 'clusters',
+                type: 'circle',
+                source: 'listings',
+                filter: ['has', 'point_count'],
+                paint: {
+                    'circle-color': [
+                        'step',
+                        ['get', 'point_count'],
+                        '#a0a0a0',
+                        100,
+                        '#848484',
+                        400,
+                        '#424242',
+                        750,
+                        '#222222'
+                    ],
+                    'circle-radius': [
+                        'step',
+                        ['get', 'point_count'],
+                        20,
+                        100,
+                        30,
+                        750,
+                        40
+                    ]
+                }
+            });
+
+            map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'listings',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': '{point_count_abbreviated}',
+                    'text-size': 16,
+                },
+                paint: {
+                    "text-color": "#ffffff"
+                }
+            });
+
+            map.addLayer({
+                id: 'points',
+                type: 'circle',
+                filter: ['!', ['has', 'point_count']],
+                source: 'listings',
+                paint: {
+                    'circle-color': '#000',
+                    'circle-radius': 6,
+                }
+            });
+        })
+</script>

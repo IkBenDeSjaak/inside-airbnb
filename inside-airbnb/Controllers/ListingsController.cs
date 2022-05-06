@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using inside_airbnb.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 
 namespace inside_airbnb.Controllers
 {
@@ -25,7 +26,26 @@ namespace inside_airbnb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Listings.ToListAsync());
+            List<Listing> listings = await _context.Listings.Take(100).ToListAsync();
+
+            FeatureCollection featureCollection = new FeatureCollection();
+
+            foreach (var listing in listings)
+            {
+                // Because points are missing in latitude and longitude coördinates (Amsterdam is at about 52.3 and 4.8)
+                double latitude = listing.Latitude = Double.Parse(listing.Latitude.ToString().Insert(2, "."), CultureInfo.InvariantCulture);
+                double longitude = listing.Longitude = Double.Parse(listing.Longitude.ToString().Insert(1, "."), CultureInfo.InvariantCulture);
+
+                featureCollection.Features.Add(new Feature(new Geometry(new Coordinates(longitude, latitude)), new Property(listing.Id)));
+            }
+
+            var listingsVM = new ListingsViewModel
+            {
+                Listings = featureCollection
+            };
+
+            //return View(listings);
+            return View(listingsVM);
         }
 
         // GET: Listings/Details/5
