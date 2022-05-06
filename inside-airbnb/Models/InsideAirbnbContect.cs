@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace inside_airbnb.Models
 {
-    public partial class InsideAirbnbContext : DbContext
+    public partial class InsideAirbnbContect : DbContext
     {
-        public InsideAirbnbContext()
+        public InsideAirbnbContect()
         {
         }
 
-        public InsideAirbnbContext(DbContextOptions<InsideAirbnbContext> options)
+        public InsideAirbnbContect(DbContextOptions<InsideAirbnbContect> options)
             : base(options)
         {
         }
@@ -35,9 +35,11 @@ namespace inside_airbnb.Models
 
             modelBuilder.Entity<Listing>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("listings");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Availability365).HasColumnName("availability_365");
 
@@ -48,8 +50,6 @@ namespace inside_airbnb.Models
                 entity.Property(e => e.HostName)
                     .IsUnicode(false)
                     .HasColumnName("host_name");
-
-                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.LastReview)
                     .HasColumnType("date")
@@ -90,7 +90,7 @@ namespace inside_airbnb.Models
 
             modelBuilder.Entity<Neighbourhood>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Neighbourhood1);
 
                 entity.ToTable("neighbourhoods");
 
