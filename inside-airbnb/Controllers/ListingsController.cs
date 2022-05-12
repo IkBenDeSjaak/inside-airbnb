@@ -17,9 +17,9 @@ namespace inside_airbnb.Controllers
     public class ListingsController : Controller
     {
         //private readonly InsideAirbnbContext _context;
-        private readonly IListingsService _listingsService;
+        private readonly IListingService _listingsService;
 
-        public ListingsController(IListingsService listingsService)
+        public ListingsController(IListingService listingsService)
         {
             this._listingsService = listingsService;
         }

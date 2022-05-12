@@ -3,20 +3,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace inside_airbnb.Services
 {
-    public class ListingsService : IListingsService
+    public class ListingService : IListingService
     {
         private readonly InsideAirbnbContext _context;
-        private readonly DbSet<Listing> _repo;
+        private readonly DbSet<Listing> _dbSet;
 
-        public ListingsService(InsideAirbnbContext context)
+        public ListingService(InsideAirbnbContext context)
         {
             _context = context;
-            _repo = context.Set<Listing>();
+            _dbSet = context.Set<Listing>();
         }
 
         public async Task<IEnumerable<Listing>> GetListings()
         {
-            return await _repo.Take(100).ToListAsync();
+            return await _dbSet.Take(100).ToListAsync();
         }
 
         public Task<Listing> GetListingByID(int listingId)

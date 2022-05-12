@@ -2,7 +2,7 @@
 
 namespace inside_airbnb.Services
 {
-    public interface IListingsService
+    public interface IListingService
     {
         Task<IEnumerable<Listing>> GetListings();
         Task<Listing> GetListingByID(int listingId);
