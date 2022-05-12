@@ -5,7 +5,7 @@ namespace inside_airbnb.Services
 {
     public class ListingsService : IListingsService
     {
-        private InsideAirbnbContext _context;
+        private readonly InsideAirbnbContext _context;
         private readonly DbSet<Listing> _repo;
 
         public ListingsService(InsideAirbnbContext context)
