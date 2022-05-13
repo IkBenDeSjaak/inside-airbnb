@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using inside_airbnb.Models;
+using inside_airbnb.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Globalization;
 using inside_airbnb.Services;

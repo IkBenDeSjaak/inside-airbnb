@@ -1,4 +1,4 @@
-﻿using inside_airbnb.Models;
+﻿using inside_airbnb.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
