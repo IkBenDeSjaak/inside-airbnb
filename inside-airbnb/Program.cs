@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAdB2C"));
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddDbContext<InsideAirbnbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("default") ?? throw new InvalidOperationException("Connection string 'default' not found.")));
@@ -29,8 +29,8 @@ builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
 
 //Configuring appsettings section AzureAdB2C, into IOptions
-builder.Services.AddOptions();
-builder.Services.Configure<OpenIdConnectOptions>(builder.Configuration.GetSection("AzureAdB2C"));
+//builder.Services.AddOptions();
+//builder.Services.Configure<OpenIdConnectOptions>(builder.Configuration.GetSection("AzureAd"));
 
 var app = builder.Build();
 

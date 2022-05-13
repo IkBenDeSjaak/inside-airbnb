@@ -11,10 +11,46 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ListingUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ListingUrl)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ScrapeId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ScrapeId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastScraped)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastScraped)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NeighborhoodOverview)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NeighborhoodOverview)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PictureUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PictureUrl)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.HostId)
@@ -23,22 +59,124 @@
             @Html.DisplayFor(model => model.HostId)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostUrl)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.HostName)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.HostName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NeighbourhoodGroup)
+            @Html.DisplayNameFor(model => model.HostSince)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NeighbourhoodGroup)
+            @Html.DisplayFor(model => model.HostSince)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostLocation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostLocation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostAbout)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostAbout)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostResponseTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostResponseTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostResponseRate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostResponseRate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostAcceptanceRate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostAcceptanceRate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostIsSuperhost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostIsSuperhost)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostThumbnailUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostThumbnailUrl)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostPictureUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostPictureUrl)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostNeighbourhood)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostNeighbourhood)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostListingsCount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostListingsCount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostTotalListingsCount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostTotalListingsCount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostVerifications)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostVerifications)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostHasProfilePic)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostHasProfilePic)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HostIdentityVerified)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HostIdentityVerified)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Neighbourhood)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Neighbourhood)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NeighbourhoodCleansed)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NeighbourhoodCleansed)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NeighbourhoodGroupCleansed)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NeighbourhoodGroupCleansed)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Latitude)
@@ -53,10 +191,52 @@
             @Html.DisplayFor(model => model.Longitude)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PropertyType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PropertyType)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.RoomType)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RoomType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Accommodates)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Accommodates)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bathrooms)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bathrooms)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BathroomsText)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BathroomsText)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bedrooms)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bedrooms)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Beds)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Beds)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Amenities)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Amenities)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
@@ -71,28 +251,76 @@
             @Html.DisplayFor(model => model.MinimumNights)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumberOfReviews)
+            @Html.DisplayNameFor(model => model.MaximumNights)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumberOfReviews)
+            @Html.DisplayFor(model => model.MaximumNights)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastReview)
+            @Html.DisplayNameFor(model => model.MinimumMinimumNights)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastReview)
+            @Html.DisplayFor(model => model.MinimumMinimumNights)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReviewsPerMonth)
+            @Html.DisplayNameFor(model => model.MaximumMinimumNights)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReviewsPerMonth)
+            @Html.DisplayFor(model => model.MaximumMinimumNights)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CalculatedHostListingsCount)
+            @Html.DisplayNameFor(model => model.MinimumMaximumNights)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CalculatedHostListingsCount)
+            @Html.DisplayFor(model => model.MinimumMaximumNights)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaximumMaximumNights)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaximumMaximumNights)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MinimumNightsAvgNtm)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MinimumNightsAvgNtm)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaximumNightsAvgNtm)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaximumNightsAvgNtm)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CalendarUpdated)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CalendarUpdated)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HasAvailability)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HasAvailability)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Availability30)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Availability30)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Availability60)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Availability60)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Availability90)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Availability90)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Availability365)
@@ -101,16 +329,124 @@
             @Html.DisplayFor(model => model.Availability365)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CalendarLastScraped)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CalendarLastScraped)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfReviews)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfReviews)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NumberOfReviewsLtm)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NumberOfReviewsLtm)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfReviewsL30d)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfReviewsL30d)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstReview)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstReview)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastReview)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastReview)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewScoresRating)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewScoresRating)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewScoresAccuracy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewScoresAccuracy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewScoresCleanliness)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewScoresCleanliness)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewScoresCheckin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewScoresCheckin)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewScoresCommunication)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewScoresCommunication)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewScoresLocation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewScoresLocation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewScoresValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewScoresValue)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.License)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.License)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InstantBookable)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InstantBookable)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CalculatedHostListingsCount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CalculatedHostListingsCount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CalculatedHostListingsCountEntireHomes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CalculatedHostListingsCountEntireHomes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CalculatedHostListingsCountPrivateRooms)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CalculatedHostListingsCountPrivateRooms)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CalculatedHostListingsCountSharedRooms)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CalculatedHostListingsCountSharedRooms)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewsPerMonth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReviewsPerMonth)
         </dd>
     </dl>
 </div>

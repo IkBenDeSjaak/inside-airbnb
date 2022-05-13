@@ -21,7 +21,7 @@ namespace inside_airbnb.Controllers
 
         public ListingsController(IListingService listingsService)
         {
-            this._listingsService = listingsService;
+            _listingsService = listingsService;
         }
 
         // GET: Listings

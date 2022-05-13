@@ -2,11 +2,11 @@
 {
     public class Property
     {
-        public Property(int listingId)
+        public Property(long listingId)
         {
             ListingId = listingId;
         }
 
-        public int ListingId { get; set; }
+        public long ListingId { get; set; }
     }
 }

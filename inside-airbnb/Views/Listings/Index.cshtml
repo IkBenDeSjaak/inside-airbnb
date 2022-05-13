@@ -4,203 +4,83 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
 
+<h1>Index</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <div id="map" style="width: 100%; height: 500px;"></div>
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HostId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HostName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NeighbourhoodGroup)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Neighbourhood)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinimumNights)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfReviews)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastReview)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReviewsPerMonth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CalculatedHostListingsCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Availability365)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumberOfReviewsLtm)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.License)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HostId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HostName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NeighbourhoodGroup)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Neighbourhood)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MinimumNights)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfReviews)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastReview)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReviewsPerMonth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CalculatedHostListingsCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Availability365)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfReviewsLtm)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.License)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>*@
 
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiaWtiZW5kZXNqYWFrIiwiYSI6ImNsMnVjdnRrZDAwdWcza296Zm1zN2pnbXoifQ.FrZP3oNq-RBL9RMJES4xsQ';
-        map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [4.902318081500600, 52.37851665631290],
-            zoom: 12,
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [4.902318081500600, 52.37851665631290],
+        zoom: 12,
+    });
+    map.on('load', () => {
+        map.addSource('listings', {
+            type: 'geojson',
+            data: @Json.Serialize(Model.Listings),
+            cluster: true,
+            clusterMaxZoom: 14,
+            clusterRadius: 50
         });
-        map.on('load', () => {
-            map.addSource('listings', {
-                type: 'geojson',
-                data: @Json.Serialize(Model.Listings),
-                cluster: true,
-                clusterMaxZoom: 14,
-                clusterRadius: 50
-            });
-            map.addLayer({
-                id: 'clusters',
-                type: 'circle',
-                source: 'listings',
-                filter: ['has', 'point_count'],
-                paint: {
-                    'circle-color': [
-                        'step',
-                        ['get', 'point_count'],
-                        '#a0a0a0',
-                        100,
-                        '#848484',
-                        400,
-                        '#424242',
-                        750,
-                        '#222222'
-                    ],
-                    'circle-radius': [
-                        'step',
-                        ['get', 'point_count'],
-                        20,
-                        100,
-                        30,
-                        750,
-                        40
-                    ]
-                }
-            });
+        map.addLayer({
+            id: 'clusters',
+            type: 'circle',
+            source: 'listings',
+            filter: ['has', 'point_count'],
+            paint: {
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#a0a0a0',
+                    100,
+                    '#848484',
+                    400,
+                    '#424242',
+                    750,
+                    '#222222'
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    20,
+                    100,
+                    30,
+                    750,
+                    40
+                ]
+            }
+        });
 
-            map.addLayer({
-                id: 'cluster-count',
-                type: 'symbol',
-                source: 'listings',
-                filter: ['has', 'point_count'],
-                layout: {
-                    'text-field': '{point_count_abbreviated}',
-                    'text-size': 16,
-                },
-                paint: {
-                    "text-color": "#ffffff"
-                }
-            });
+        map.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'listings',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-size': 16,
+            },
+            paint: {
+                "text-color": "#ffffff"
+            }
+        });
 
-            map.addLayer({
-                id: 'points',
-                type: 'circle',
-                filter: ['!', ['has', 'point_count']],
-                source: 'listings',
-                paint: {
-                    'circle-color': '#000',
-                    'circle-radius': 6,
-                }
-            });
-        })
+        map.addLayer({
+            id: 'points',
+            type: 'circle',
+            filter: ['!', ['has', 'point_count']],
+            source: 'listings',
+            paint: {
+                'circle-color': '#000',
+                'circle-radius': 6,
+            }
+        });
+    })
 </script>

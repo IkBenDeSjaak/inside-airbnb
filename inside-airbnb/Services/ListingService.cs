@@ -19,7 +19,7 @@ namespace inside_airbnb.Services
             return await _dbSet.Take(100).ToListAsync();
         }
 
-        public Task<Listing> GetListingByID(int listingId)
+        public Task<Listing> GetListingByID(long listingId)
         {
             throw new NotImplementedException();
         }
@@ -29,7 +29,7 @@ namespace inside_airbnb.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteListing(int listingId)
+        public Task DeleteListing(long listingId)
         {
             throw new NotImplementedException();
         }
