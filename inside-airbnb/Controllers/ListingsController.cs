@@ -30,7 +30,6 @@ namespace inside_airbnb.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Listing> listings = await _listingsService.GetListings(null, null, null, null);
-
             return View(listings);
         }
 

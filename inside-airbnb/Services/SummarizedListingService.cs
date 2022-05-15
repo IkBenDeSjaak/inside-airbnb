@@ -40,5 +40,17 @@ namespace inside_airbnb.Services
 
             return await listings.ToListAsync();
         }
+
+        public async Task<SummarizedListing> GetListingByID(long listingId)
+        {
+            SummarizedListing listing = await _dbSet.FindAsync(listingId);
+
+            if (listing == null)
+            {
+                return new SummarizedListing();
+            }
+
+            return listing;
+        }
     }
 }

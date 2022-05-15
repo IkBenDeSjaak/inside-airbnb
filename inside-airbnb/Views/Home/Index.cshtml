@@ -10,6 +10,9 @@
 <p>
     <a asp-controller="Listings" asp-action="Create">Create New</a>
 </p>
+<p>
+   Selected item: @Model.SelectedListing!.Id
+</p>
 
 <form asp-controller="Home" asp-action="Index" method="get">
     Neighbourhood: <select asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
@@ -26,11 +29,11 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiaWtiZW5kZXNqYWFrIiwiYSI6ImNsMnVjdnRrZDAwdWcza296Zm1zN2pnbXoifQ.FrZP3oNq-RBL9RMJES4xsQ';
-    map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [4.902318081500600, 52.37851665631290],
-        zoom: 11,
+map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [@Json.Serialize(Model.Longitude), @Json.Serialize(Model.Latitude)],
+        zoom: @Json.Serialize(Model.Zoom),
     });
     map.on('load', () => {
         map.addSource('listings', {
@@ -92,6 +95,40 @@
                 'circle-color': '#000',
                 'circle-radius': 6,
             }
+        });
+
+        map.on('click', 'points', function (e) {    
+            //const coordinates = e.features[0].geometry.coordinates.slice();
+            //// const description = e.features[0].properties.description;
+            //const description = e.features[0].properties.listingId;
+
+            //console.log(e)
+            //console.log(map.getZoom())
+            //console.log(map.getCenter())
+ 
+            //// Ensure that if the map is zoomed out such that multiple
+            //// copies of the feature are visible, the popup appears
+            //// over the copy being pointed to.
+            //while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            //coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            //}
+ 
+            //new mapboxgl.Popup()
+            //.setLngLat(coordinates)
+            //.setHTML(description)
+            //.addTo(map);
+
+
+            const listingId = e.features[0].properties.listingId;
+            const zoom = map.getZoom();
+            const currentLongitude = map.getCenter().lng;
+            const currentLatitude = map.getCenter().lat;
+            var newurl = new URL(window.location);
+            newurl.searchParams.set('SelectedListingId', listingId);
+            newurl.searchParams.set('Zoom', zoom);
+            newurl.searchParams.set('CurrentLongitude', currentLongitude);
+            newurl.searchParams.set('CurrentLatitude', currentLatitude);
+            window.location = newurl;
         });
     })
 </script>

@@ -24,9 +24,23 @@ namespace inside_airbnb.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string? neighbourhood, int? minPrice, int? maxPrice, int? numberOfReviews)
-        {
+        public async Task<IActionResult> Index(string? neighbourhood, int? minPrice, int? maxPrice, int? numberOfReviews, long selectedListingId, double? zoom, double? currentLongitude, double? currentLatitude)
+        { 
             IEnumerable<SummarizedListing> listings = await _summarizedListingService.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
+            SummarizedListing selectedListing = await _summarizedListingService.GetListingByID(selectedListingId);
+
+            if(zoom == null) 
+            {
+                zoom = 11;
+            }
+            if (currentLongitude == null)
+            {
+                currentLongitude = 4.902318081500600;
+            }
+            if(currentLatitude == null)
+            {
+                currentLatitude = 52.37851665631290;
+            }
 
             FeatureCollection featureCollection = new FeatureCollection();
 
@@ -44,7 +58,11 @@ namespace inside_airbnb.Controllers
             var listingsVM = new ListingsViewModel
             {
                 Listings = featureCollection,
-                Neighbourhoods = new SelectList(neighbourhoods)
+                Neighbourhoods = new SelectList(neighbourhoods),
+                SelectedListing = selectedListing,
+                Zoom = zoom,
+                Latitude = currentLatitude,
+                Longitude = currentLongitude
             };
 
             return View(listingsVM);
