@@ -12,15 +12,13 @@
 </p>
 
 <form asp-controller="Home" asp-action="Index" method="get">
-    <p>
-        <select asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
-            <option value="">All</option>
-        </select>
-        Min price: <input type="number" asp-for="MinPrice" />
-        Max price: <input type="number" asp-for="MaxPrice" />
-        Number of reviews: <input type="number" asp-for="NumberOfReviews" />
-        <input type="submit" value="Filter" />
-    </p>
+    Neighbourhood: <select asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
+        <option value="">All</option>
+    </select>
+    Min price: <input type="number" asp-for="MinPrice" />
+    Max price: <input type="number" asp-for="MaxPrice" />
+    Nr of reviews: <input type="number" asp-for="NumberOfReviews" />
+    <input type="submit" value="Filter" />
 </form>
 
 <div id="map" style="width: 100%; height: 500px;"></div>

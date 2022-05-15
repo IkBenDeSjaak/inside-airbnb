@@ -13,20 +13,20 @@ namespace inside_airbnb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IListingService _listingsService;
+        private readonly ISummarizedListingService _summarizedListingService;
         private readonly INeighbourhoodService _neighbourhoodService;
 
-        public HomeController(ILogger<HomeController> logger, IListingService listingsService, INeighbourhoodService neighbourhoodService)
+        public HomeController(ILogger<HomeController> logger, ISummarizedListingService summarizedListingService, INeighbourhoodService neighbourhoodService)
         {
             _logger = logger;
-            _listingsService = listingsService;
+            _summarizedListingService = summarizedListingService;
             _neighbourhoodService = neighbourhoodService;
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string neighbourhood, int minPrice, int maxPrice, int numberOfReviews)
+        public async Task<IActionResult> Index(string? neighbourhood, int? minPrice, int? maxPrice, int? numberOfReviews)
         {
-            IEnumerable<Listing> listings = await _listingsService.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
+            IEnumerable<SummarizedListing> listings = await _summarizedListingService.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
 
             FeatureCollection featureCollection = new FeatureCollection();
 
@@ -47,7 +47,6 @@ namespace inside_airbnb.Controllers
                 Neighbourhoods = new SelectList(neighbourhoods)
             };
 
-            //return View(listings);
             return View(listingsVM);
         }
 
