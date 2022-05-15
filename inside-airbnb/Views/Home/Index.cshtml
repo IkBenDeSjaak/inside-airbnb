@@ -10,6 +10,19 @@
 <p>
     <a asp-controller="Listings" asp-action="Create">Create New</a>
 </p>
+
+<form asp-controller="Home" asp-action="Index" method="get">
+    <p>
+        <select asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
+            <option value="">All</option>
+        </select>
+        Min price: <input type="number" asp-for="MinPrice" />
+        Max price: <input type="number" asp-for="MaxPrice" />
+        Number of reviews: <input type="number" asp-for="NumberOfReviews" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <div id="map" style="width: 100%; height: 500px;"></div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
@@ -19,7 +32,7 @@
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [4.902318081500600, 52.37851665631290],
-        zoom: 12,
+        zoom: 11,
     });
     map.on('load', () => {
         map.addSource('listings', {
