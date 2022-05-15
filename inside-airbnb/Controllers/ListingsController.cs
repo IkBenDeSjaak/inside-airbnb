@@ -31,24 +31,7 @@ namespace inside_airbnb.Controllers
         {
             IEnumerable<Listing> listings = await _listingsService.GetListings();
 
-            FeatureCollection featureCollection = new FeatureCollection();
-
-            foreach (var listing in listings)
-            {
-                // Because points are missing in latitude and longitude coördinates (Amsterdam is at about 52.3 and 4.8)
-                double latitude = listing.Latitude = Double.Parse(listing.Latitude.ToString().Insert(2, "."), CultureInfo.InvariantCulture);
-                double longitude = listing.Longitude = Double.Parse(listing.Longitude.ToString().Insert(1, "."), CultureInfo.InvariantCulture);
-
-                featureCollection.Features.Add(new Feature(new Geometry(new Coordinates(longitude, latitude)), new Property(listing.Id)));
-            }
-
-            var listingsVM = new ListingsViewModel
-            {
-                Listings = featureCollection
-            };
-
-            //return View(listings);
-            return View(listingsVM);
+            return View(listings);
         }
 
         // GET: Listings/Details/5
