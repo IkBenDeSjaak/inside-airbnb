@@ -43,7 +43,7 @@ namespace inside_airbnb.Services
 
         public async Task<SummarizedListing> GetListingByID(long listingId)
         {
-            SummarizedListing listing = await _dbSet.FindAsync(listingId);
+            SummarizedListing? listing = await _dbSet.FindAsync(listingId);
 
             if (listing == null)
             {

@@ -1,5 +1,6 @@
 ﻿using inside_airbnb.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace inside_airbnb.Services
 {
@@ -14,23 +15,23 @@ namespace inside_airbnb.Services
             _dbSet = context.Set<Listing>();
         }
 
-        public async Task<IEnumerable<Listing>> GetListings(string? neighbourhood, int? minPrice, int? maxPrice, int? nrOfReviews)
+        public async Task<IEnumerable<ListingLocation>> GetListings(string? neighbourhood, int? minPrice, int? maxPrice, int? nrOfReviews)
         {
-            IQueryable<Listing> listings = _dbSet.Select(listing => listing);
+            IQueryable<ListingLocation> listings = _context.Listings.Select(listing => new ListingLocation { Id = listing.Id, Latitude = listing.Latitude, Longitude = listing.Longitude, Price = listing.Price, NumberOfReviews = listing.NumberOfReviews, Neighbourhood = listing.NeighbourhoodCleansed });
 
             if (!string.IsNullOrEmpty(neighbourhood))
             {
-                listings = listings.Where(listing => listing.NeighbourhoodCleansed!.Contains(neighbourhood));
+                listings = listings.Where(listing => listing.Neighbourhood!.Contains(neighbourhood));
             }
 
             if (minPrice != null)
             {
-                //listings = listings.Where(listing => int.Parse(listing.Price!.Remove(0, 1)) > minPrice);
+                listings = listings.Where(listing => listing.Price! > minPrice);
             }
 
             if (maxPrice != null)
             {
-                //listings = listings.Where(listing => int.Parse(listing.Price!.Remove(0, 1)) < maxPrice);
+                listings = listings.Where(listing => listing.Price! < maxPrice);
             }
 
             if (nrOfReviews != null)
@@ -38,32 +39,42 @@ namespace inside_airbnb.Services
                 listings = listings.Where(listing => listing.NumberOfReviews! > nrOfReviews);
             }
 
-            return await listings.ToListAsync();
+            listings = listings.Select(listing => new ListingLocation { Id = listing.Id, Latitude = listing.Latitude, Longitude = listing.Longitude });
+            
+            IEnumerable<ListingLocation> listingLocations = await listings.ToListAsync();
+
+            foreach (ListingLocation listing in listingLocations)
+            {
+                // Because points are missing in latitude and longitude coördinates (Amsterdam is at about 52.3 and 4.8)
+                listing.Latitude = ConvertLatitude(listing.Latitude);
+                listing.Longitude = ConvertLongitude(listing.Longitude);
+            }
+
+            return listingLocations;
         }
 
-        public Task<Listing> GetListingByID(long listingId)
+        public async Task<ListingInformation> GetListingByID(long listingId)
         {
-            throw new NotImplementedException();
+            Listing? listing = await _dbSet.FindAsync(listingId);
+
+            if(listing != null)
+            {
+                return new ListingInformation() { Latitude = ConvertLatitude(listing.Latitude), Longitude = ConvertLongitude(listing.Longitude), Bathrooms = listing?.Bathrooms, Bedrooms = listing?.Bedrooms, Beds = listing?.Beds, HostName = listing.HostName, Id = listing.Id, Name = listing.Name, Neighbourhood = listing.NeighbourhoodCleansed, NumberOfReviews = listing.NumberOfReviews, Price = listing.Price, PropertyType = listing.PropertyType, RoomType = listing.RoomType };
+
+            } else
+            {
+                return new ListingInformation();
+            }
         }
 
-        public Task InsertListing(Listing listing)
+        public double ConvertLatitude(double latitude)
         {
-            throw new NotImplementedException();
+            return Double.Parse(latitude.ToString().Insert(2, "."), CultureInfo.InvariantCulture);
         }
 
-        public Task DeleteListing(long listingId)
+        public double ConvertLongitude(double longitude)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateListing(Listing listing)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Save()
-        {
-            throw new NotImplementedException();
+            return Double.Parse(longitude.ToString().Insert(1, "."), CultureInfo.InvariantCulture);
         }
     }
 }

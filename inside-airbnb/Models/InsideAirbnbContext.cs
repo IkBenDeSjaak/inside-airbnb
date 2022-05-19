@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using inside_airbnb.Models;
 
 namespace inside_airbnb.Models
 {
@@ -318,5 +319,9 @@ namespace inside_airbnb.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public DbSet<inside_airbnb.Models.ListingLocation>? ListingLocation { get; set; }
+
+        public DbSet<inside_airbnb.Models.ListingInformation>? ListingInformation { get; set; }
     }
 }

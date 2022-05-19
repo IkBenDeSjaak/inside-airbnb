@@ -13,6 +13,6 @@ namespace inside_airbnb.Models.ViewModels
         public double? Zoom { get; set; }
         public double? Longitude { get; set; }
         public double? Latitude { get; set; }
-        public SummarizedListing? SelectedListing { get; set; }
+        public ListingInformation? SelectedListing { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace inside_airbnb.Models
         public int? Bedrooms { get; set; }
         public int? Beds { get; set; }
         public string Amenities { get; set; } = null!;
-        public string Price { get; set; } = null!;
+        public int Price { get; set; }
         public int? MinimumNights { get; set; }
         public int? MaximumNights { get; set; }
         public int? MinimumMinimumNights { get; set; }

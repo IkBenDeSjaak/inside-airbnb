@@ -13,23 +13,26 @@ namespace inside_airbnb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ISummarizedListingService _summarizedListingService;
+        private readonly IListingService _listingService;
         private readonly INeighbourhoodService _neighbourhoodService;
 
-        public HomeController(ILogger<HomeController> logger, ISummarizedListingService summarizedListingService, INeighbourhoodService neighbourhoodService)
+        public HomeController(ILogger<HomeController> logger, IListingService listingService, INeighbourhoodService neighbourhoodService)
         {
             _logger = logger;
-            _summarizedListingService = summarizedListingService;
+            _listingService = listingService;
             _neighbourhoodService = neighbourhoodService;
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> Index(string? neighbourhood, int? minPrice, int? maxPrice, int? numberOfReviews, long selectedListingId, double? zoom, double? currentLongitude, double? currentLatitude)
         { 
-            IEnumerable<SummarizedListing> listings = await _summarizedListingService.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
-            SummarizedListing selectedListing = await _summarizedListingService.GetListingByID(selectedListingId);
+            IEnumerable<ListingLocation> listings = await _listingService.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
+            ListingInformation selectedListing = await _listingService.GetListingByID(selectedListingId);
+            IEnumerable<string> neighbourhoods = await _neighbourhoodService.GetNeighbourhoods();
+            FeatureCollection featureCollection = ConvertListingsToFeatureCollection(listings);
 
-            if(zoom == null) 
+            if (zoom == null) 
             {
                 zoom = 11;
             }
@@ -41,19 +44,6 @@ namespace inside_airbnb.Controllers
             {
                 currentLatitude = 52.37851665631290;
             }
-
-            FeatureCollection featureCollection = new FeatureCollection();
-
-            foreach (var listing in listings)
-            {
-                // Because points are missing in latitude and longitude coördinates (Amsterdam is at about 52.3 and 4.8)
-                double latitude = listing.Latitude = Double.Parse(listing.Latitude.ToString().Insert(2, "."), CultureInfo.InvariantCulture);
-                double longitude = listing.Longitude = Double.Parse(listing.Longitude.ToString().Insert(1, "."), CultureInfo.InvariantCulture);
-
-                featureCollection.Features.Add(new Feature(new Geometry(new Coordinates(longitude, latitude)), new Property(listing.Id)));
-            }
-
-            IEnumerable<string> neighbourhoods = await _neighbourhoodService.GetNeighbourhoods();
 
             var listingsVM = new ListingsViewModel
             {
@@ -69,6 +59,7 @@ namespace inside_airbnb.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();
@@ -79,6 +70,19 @@ namespace inside_airbnb.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public FeatureCollection ConvertListingsToFeatureCollection(IEnumerable<ListingLocation> listings)
+        {
+            FeatureCollection featureCollection = new FeatureCollection();
+
+            foreach (ListingLocation listing in listings)
+            {
+                // Because points are missing in latitude and longitude coördinates (Amsterdam is at about 52.3 and 4.8)
+                featureCollection.Features.Add(new Feature(new Geometry(new Coordinates(listing.Longitude, listing.Latitude)), new Property(listing.Id)));
+            }
+
+            return featureCollection;
         }
     }
 }
