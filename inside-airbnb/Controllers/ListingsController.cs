@@ -37,12 +37,12 @@ namespace inside_airbnb.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(long id)
         {
-            if(id == null)
+            ListingInformation listing = await _listingsService.GetListingByID(id);
+
+            if (listing == null)
             {
                 return NotFound();
             }
-
-            ListingInformation listing = await _listingsService.GetListingByID(id);
 
             return View(listing);
         }

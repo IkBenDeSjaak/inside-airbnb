@@ -17,7 +17,7 @@ namespace inside_airbnb.Services
 
         public async Task<IEnumerable<ListingLocation>> GetListings(string? neighbourhood, int? minPrice, int? maxPrice, int? nrOfReviews)
         {
-            IQueryable<ListingLocation> listings = _context.Listings.Select(listing => new ListingLocation { Id = listing.Id, Latitude = listing.Latitude, Longitude = listing.Longitude, Price = listing.Price, NumberOfReviews = listing.NumberOfReviews, Neighbourhood = listing.NeighbourhoodCleansed });
+            IQueryable<ListingLocation> listings = _dbSet.Select(listing => new ListingLocation { Id = listing.Id, Latitude = listing.Latitude, Longitude = listing.Longitude, Price = listing.Price, NumberOfReviews = listing.NumberOfReviews, Neighbourhood = listing.NeighbourhoodCleansed });
 
             if (!string.IsNullOrEmpty(neighbourhood))
             {
@@ -53,7 +53,7 @@ namespace inside_airbnb.Services
             return listingLocations;
         }
 
-        public async Task<ListingInformation> GetListingByID(long listingId)
+        public async Task<ListingInformation?> GetListingByID(long listingId)
         {
             Listing? listing = await _dbSet.FindAsync(listingId);
 
@@ -63,7 +63,7 @@ namespace inside_airbnb.Services
 
             } else
             {
-                return new ListingInformation();
+                return null;
             }
         }
 

@@ -11,8 +11,8 @@ namespace inside_airbnb.Models.ViewModels
         public int? MaxPrice { get; set; }
         public int? NumberOfReviews { get; set; }
         public double? Zoom { get; set; }
-        public double? Longitude { get; set; }
-        public double? Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
         public ListingInformation? SelectedListing { get; set; }
     }
 }

@@ -10,21 +10,21 @@
     <div class="col-sm-10">
         <form asp-controller="Home" asp-action="Index" method="get">
             <div class="row row-cols-2">
-            <div class="col justify-content-end">
-            Neighbourhood: <select asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
-                <option value="">All</option>
-            </select>
+                <div class="col justify-content-end">
+                    Neighbourhood: <select asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
+                        <option value="">All</option>
+                    </select>
+                </div>
+                <div class="col">
+                    Nr of reviews: <input type="number" asp-for="NumberOfReviews" />
+                </div>
+                <div class="col">
+                    Min price: <input type="number" asp-for="MinPrice" />
+                </div>
+                <div class="col">
+                    Max price: <input type="number" asp-for="MaxPrice" />
+                </div>
             </div>
-            <div class="col">
-            Nr of reviews: <input type="number" asp-for="NumberOfReviews" />
-          </div>
-        <div class="col">
-            Min price: <input type="number" asp-for="MinPrice" />
-            </div>
-            <div class="col">
-            Max price: <input type="number" asp-for="MaxPrice" />
-            </div>
-          </div>
             <input type="submit" value="Filter" />
         </form>
 
@@ -32,10 +32,12 @@
     </div>
     <div class="col-sm-2">
         <h2>Details</h2>
-        @if(@Model.SelectedListing.Id == 0) {
+        @if (@Model.SelectedListing == null)
+        {
             <p>No listing selected to view details about.</p>
             <p> Select an item from the map.</p>
-        } else
+        }
+        else
         {
             <p>Name: @Model.SelectedListing.Name</p>
             <p>Name of host: @Model.SelectedListing.HostName</p>
@@ -59,105 +61,92 @@
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [@Json.Serialize(Model.Longitude), @Json.Serialize(Model.Latitude)],
-            zoom: @Json.Serialize(Model.Zoom),
+        zoom: @Json.Serialize(Model.Zoom),
+    });
+    map.on('load', () => {
+        map.addSource('listings', {
+            type: 'geojson',
+            data: @Json.Serialize(Model.Listings),
+            cluster: true,
+            clusterMaxZoom: 14,
+            clusterRadius: 50
         });
-        map.on('load', () => {
-            map.addSource('listings', {
-                type: 'geojson',
-                data: @Json.Serialize(Model.Listings),
-                cluster: true,
-                clusterMaxZoom: 14,
-                clusterRadius: 50
-            });
-            map.addLayer({
-                id: 'clusters',
-                type: 'circle',
-                source: 'listings',
-                filter: ['has', 'point_count'],
-                paint: {
-                    'circle-color': [
-                        'step',
-                        ['get', 'point_count'],
-                        '#a0a0a0',
-                        100,
-                        '#848484',
-                        400,
-                        '#424242',
-                        750,
-                        '#222222'
-                    ],
-                    'circle-radius': [
-                        'step',
-                        ['get', 'point_count'],
-                        20,
-                        100,
-                        30,
-                        750,
-                        40
-                    ]
-                }
-            });
+        map.addLayer({
+            id: 'clusters',
+            type: 'circle',
+            source: 'listings',
+            filter: ['has', 'point_count'],
+            paint: {
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#a0a0a0',
+                    100,
+                    '#848484',
+                    400,
+                    '#424242',
+                    750,
+                    '#222222'
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    20,
+                    100,
+                    30,
+                    750,
+                    40
+                ]
+            }
+        });
 
-            map.addLayer({
-                id: 'cluster-count',
-                type: 'symbol',
-                source: 'listings',
-                filter: ['has', 'point_count'],
-                layout: {
-                    'text-field': '{point_count_abbreviated}',
-                    'text-size': 16,
-                },
-                paint: {
-                    "text-color": "#ffffff"
-                }
-            });
+        map.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'listings',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-size': 16,
+            },
+            paint: {
+                "text-color": "#ffffff"
+            }
+        });
 
-            map.addLayer({
-                id: 'points',
-                type: 'circle',
-                filter: ['!', ['has', 'point_count']],
-                source: 'listings',
-                paint: {
-                    'circle-color': '#000',
-                    'circle-radius': 6,
-                }
-            });
+        map.addLayer({
+            id: 'points',
+            type: 'circle',
+            filter: ['!', ['has', 'point_count']],
+            source: 'listings',
+            paint: {
+                'circle-color': '#000',
+                'circle-radius': 6,
+            }
+        });
 
-            map.on('click', 'points', function (e) {    
-                const coordinates = e.features[0].geometry.coordinates.slice();
-                //// const description = e.features[0].properties.description;
-                //const description = e.features[0].properties.listingId;
+        map.on('click', 'points', function(e) {
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const listingId = e.features[0].properties.listingId;
+            const zoom = map.getZoom();
+            const currentLongitude = map.getCenter().lng;
+            const currentLatitude = map.getCenter().lat;
 
-                //console.log(e)
-                //console.log(map.getZoom())
-                //console.log(map.getCenter())
- 
-                // Ensure that if the map is zoomed out such that multiple
-                // copies of the feature are visible, the popup appears
-                // over the copy being pointed to.
-                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                }
- 
-                //new mapboxgl.Popup()
-                //.setLngLat(coordinates)
-                //.setHTML(description)
-                //.addTo(map);
-
-
-                const listingId = e.features[0].properties.listingId;
-                const zoom = map.getZoom();
-                const currentLongitude = map.getCenter().lng;
-                const currentLatitude = map.getCenter().lat;
-                var newurl = new URL(window.location);
-                newurl.searchParams.set('SelectedListingId', listingId);
-                newurl.searchParams.set('Zoom', zoom);
-                newurl.searchParams.set('CurrentLongitude', currentLongitude);
-                newurl.searchParams.set('CurrentLatitude', currentLatitude);
-                window.location = newurl;
-            });
-        })
-                   const marker = new mapboxgl.Marker()
-                .setLngLat([@Json.Serialize(Model.SelectedListing.Longitude), @Json.Serialize(Model.SelectedListing.Latitude)])
-                .addTo(map);
+            var newurl = new URL(window.location);
+            newurl.searchParams.set('SelectedListingId', listingId);
+            newurl.searchParams.set('Zoom', zoom);
+            newurl.searchParams.set('CurrentLongitude', currentLongitude);
+            newurl.searchParams.set('CurrentLatitude', currentLatitude);
+            window.location = newurl;
+        });
+    })
 </script>
+
+@if (Model.SelectedListing != null)
+{
+    <script>
+        const marker = new mapboxgl.Marker()
+            .setLngLat([@Json.Serialize(Model.SelectedListing.Longitude), @Json.Serialize(Model.SelectedListing.Latitude)])
+            .addTo(map);
+    </script>
+}
