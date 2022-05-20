@@ -40,7 +40,7 @@ namespace inside_airbnb.Services
             }
 
             listings = listings.Select(listing => new ListingLocation { Id = listing.Id, Latitude = listing.Latitude, Longitude = listing.Longitude });
-            
+
             IEnumerable<ListingLocation> listingLocations = await listings.ToListAsync();
 
             foreach (ListingLocation listing in listingLocations)
@@ -57,14 +57,30 @@ namespace inside_airbnb.Services
         {
             Listing? listing = await _dbSet.FindAsync(listingId);
 
-            if(listing != null)
+            if (listing != null)
             {
                 return new ListingInformation() { Latitude = ConvertLatitude(listing.Latitude), Longitude = ConvertLongitude(listing.Longitude), Bathrooms = listing?.Bathrooms, Bedrooms = listing?.Bedrooms, Beds = listing?.Beds, HostName = listing.HostName, Id = listing.Id, Name = listing.Name, Neighbourhood = listing.NeighbourhoodCleansed, NumberOfReviews = listing.NumberOfReviews, Price = listing.Price, PropertyType = listing.PropertyType, RoomType = listing.RoomType };
 
-            } else
+            }
+            else
             {
                 return null;
             }
+        }
+
+        public NeighbourhoodPrices GetAveragePricePerNeighbourhood()
+        {
+            NeighbourhoodPrices neighbourhoodPrices = new();
+
+            var pricePerNeighbourhood = _dbSet.GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Price, (key, prices) => new { Neighbourhood = key, AveragePrice = prices.Average() }).OrderBy(x => x.Neighbourhood);
+
+            foreach (var nbh in pricePerNeighbourhood)
+            {
+                neighbourhoodPrices.Neighbourhoods.Add(nbh.Neighbourhood);
+                neighbourhoodPrices.AveragePrices.Add(nbh.AveragePrice);
+            }
+
+            return neighbourhoodPrices;
         }
 
         public double ConvertLatitude(double latitude)
