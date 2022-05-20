@@ -21,7 +21,7 @@ namespace inside_airbnb.Controllers
         {
             NeighbourhoodPrices neighbourhoodPrices = _listingsService.GetAveragePricePerNeighbourhood();
 
-            StatisticsViewModel statisticsVM = new StatisticsViewModel
+            StatisticsViewModel statisticsVM = new()
             {
                 NeighbourhoodPrices = neighbourhoodPrices,
             };

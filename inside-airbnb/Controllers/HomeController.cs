@@ -45,7 +45,7 @@ namespace inside_airbnb.Controllers
                 currentLatitude = 52.37851665631290;
             }
 
-            var listingsVM = new ListingsViewModel
+            ListingsViewModel listingsVM = new()
             {
                 Listings = featureCollection,
                 Neighbourhoods = new SelectList(neighbourhoods),
