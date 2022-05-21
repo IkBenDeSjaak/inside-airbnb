@@ -7,5 +7,8 @@ namespace inside_airbnb.Services
         Task<IEnumerable<ListingLocation>> GetListings(string? neighbourhood, int? minPrice, int? maxPrice, int? nrOfReviews);
         Task<ListingInformation?> GetListingByID(long listingId);
         NeighbourhoodPrices GetAveragePricePerNeighbourhood();
+        NeighbourhoodListings GetNrOfListingsPerNeighbourhood();
+        RoomListings GetNrOfListingsPerRoomType();
+
     }
 }

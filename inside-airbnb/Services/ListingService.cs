@@ -6,18 +6,25 @@ namespace inside_airbnb.Services
 {
     public class ListingService : IListingService
     {
-        private readonly InsideAirbnbContext _context;
         private readonly DbSet<Listing> _dbSet;
 
         public ListingService(InsideAirbnbContext context)
         {
-            _context = context;
             _dbSet = context.Set<Listing>();
         }
 
         public async Task<IEnumerable<ListingLocation>> GetListings(string? neighbourhood, int? minPrice, int? maxPrice, int? nrOfReviews)
         {
-            IQueryable<ListingLocation> listings = _dbSet.Select(listing => new ListingLocation { Id = listing.Id, Latitude = listing.Latitude, Longitude = listing.Longitude, Price = listing.Price, NumberOfReviews = listing.NumberOfReviews, Neighbourhood = listing.NeighbourhoodCleansed });
+            IQueryable<ListingLocation> listings = _dbSet
+                .Select(listing => new ListingLocation
+                {
+                    Id = listing.Id,
+                    Latitude = listing.Latitude,
+                    Longitude = listing.Longitude,
+                    Price = listing.Price,
+                    NumberOfReviews = listing.NumberOfReviews,
+                    Neighbourhood = listing.NeighbourhoodCleansed
+                });
 
             if (!string.IsNullOrEmpty(neighbourhood))
             {
@@ -39,7 +46,13 @@ namespace inside_airbnb.Services
                 listings = listings.Where(listing => listing.NumberOfReviews! > nrOfReviews);
             }
 
-            listings = listings.Select(listing => new ListingLocation { Id = listing.Id, Latitude = listing.Latitude, Longitude = listing.Longitude });
+            listings = listings.
+                Select(listing => new ListingLocation
+                {
+                    Id = listing.Id,
+                    Latitude = listing.Latitude,
+                    Longitude = listing.Longitude
+                });
 
             IEnumerable<ListingLocation> listingLocations = await listings.ToListAsync();
 
@@ -59,8 +72,22 @@ namespace inside_airbnb.Services
 
             if (listing != null)
             {
-                return new ListingInformation() { Latitude = ConvertLatitude(listing.Latitude), Longitude = ConvertLongitude(listing.Longitude), Bathrooms = listing?.Bathrooms, Bedrooms = listing?.Bedrooms, Beds = listing?.Beds, HostName = listing.HostName, Id = listing.Id, Name = listing.Name, Neighbourhood = listing.NeighbourhoodCleansed, NumberOfReviews = listing.NumberOfReviews, Price = listing.Price, PropertyType = listing.PropertyType, RoomType = listing.RoomType };
-
+                return new ListingInformation()
+                {
+                    Latitude = ConvertLatitude(listing.Latitude),
+                    Longitude = ConvertLongitude(listing.Longitude),
+                    Bathrooms = listing?.Bathrooms,
+                    Bedrooms = listing?.Bedrooms,
+                    Beds = listing?.Beds,
+                    HostName = listing.HostName,
+                    Id = listing.Id,
+                    Name = listing.Name,
+                    Neighbourhood = listing.NeighbourhoodCleansed,
+                    NumberOfReviews = listing.NumberOfReviews,
+                    Price = listing.Price,
+                    PropertyType = listing.PropertyType,
+                    RoomType = listing.RoomType
+                };
             }
             else
             {
@@ -72,15 +99,51 @@ namespace inside_airbnb.Services
         {
             NeighbourhoodPrices neighbourhoodPrices = new();
 
-            var pricePerNeighbourhood = _dbSet.GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Price, (key, prices) => new { Neighbourhood = key, AveragePrice = prices.Average() }).OrderBy(x => x.Neighbourhood);
+            var pricePerNeighbourhood = _dbSet.
+                GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Price, (key, prices) => new { Neighbourhood = key, AveragePrice = Math.Round(prices.Average(), 2) }).
+                OrderBy(neighbourhood => neighbourhood.Neighbourhood);
 
-            foreach (var nbh in pricePerNeighbourhood)
+            foreach (var neighbourhood in pricePerNeighbourhood)
             {
-                neighbourhoodPrices.Neighbourhoods.Add(nbh.Neighbourhood);
-                neighbourhoodPrices.AveragePrices.Add(nbh.AveragePrice);
+                neighbourhoodPrices.Neighbourhoods.Add(neighbourhood.Neighbourhood);
+                neighbourhoodPrices.AveragePrices.Add(neighbourhood.AveragePrice);
             }
 
             return neighbourhoodPrices;
+        }
+
+        public NeighbourhoodListings GetNrOfListingsPerNeighbourhood()
+        {
+            NeighbourhoodListings neighbourhoodListings = new();
+
+            var listingsPerNeighbourhood = _dbSet.
+                GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Id, (key, ids) => new { Neighbourhood = key, NrOfListings = ids.Count() }).
+                OrderBy(neighbourhood => neighbourhood.NrOfListings);
+
+            foreach (var neighbourhood in listingsPerNeighbourhood)
+            {
+                neighbourhoodListings.Neighbourhoods.Add(neighbourhood.Neighbourhood);
+                neighbourhoodListings.NumberOfListings.Add(neighbourhood.NrOfListings);
+            }
+
+            return neighbourhoodListings;
+        }
+
+        public RoomListings GetNrOfListingsPerRoomType()
+        {
+            RoomListings roomListings = new();
+
+            var listingsPerPropertyType = _dbSet.
+                GroupBy(listing => listing.RoomType, listing => listing.Id, (key, ids) => new { RoomType = key, NrOfListings = ids.Count() }).
+                OrderBy(neighbourhood => neighbourhood.NrOfListings);
+
+            foreach (var property in listingsPerPropertyType)
+            {
+                roomListings.RoomTypes.Add(property.RoomType);
+                roomListings.NumberOfListings.Add(property.NrOfListings);
+            }
+
+            return roomListings;
         }
 
         public double ConvertLatitude(double latitude)

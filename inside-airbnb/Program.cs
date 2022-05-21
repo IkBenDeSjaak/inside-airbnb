@@ -18,6 +18,7 @@ builder.Services.AddDbContext<InsideAirbnbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("default") ?? throw new InvalidOperationException("Connection string 'default' not found.")));
 builder.Services.AddScoped<IListingService, ListingService>();
 builder.Services.AddScoped<INeighbourhoodService, NeighbourhoodService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 builder.Services.AddControllersWithViews(options =>
 {

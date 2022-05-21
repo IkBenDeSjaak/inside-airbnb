@@ -1,0 +1,117 @@
+﻿@model StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Statistics";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-6">
+        <div style="height:100%; width:100%">
+            <p class="fw-bold">Number of listings per neighbourhood</p>
+            <canvas id="NrOfListingsPerNeighbourhood" width="300" height="300"></canvas>
+        </div>
+    </div>
+    <div class="col-6">
+        <div style="height:100%; width:100%">
+            <p class="fw-bold">Average price of a listing per neighbourhood</p>
+            <canvas id="averagePricePerNeighbourhood" width="300" height="300"></canvas>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-6">
+        <div style="height:100%; width:100%">
+            <p class="fw-bold">Number of listings per room type</p>
+            <canvas id="NrOfListingsPerRoomType" width="300" height="300"></canvas>
+        </div>
+    </div>
+    <div class="col-6">
+        <div style="height:100%; width:100%">
+            <p class="fw-bold">Number of reviews per year</p>
+            <canvas id="NrOfReviewsPerYear" width="300" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    const generateColors = length => {
+        const colors = [];
+
+        for (let i = 0; i < length; i++) {
+            let r = Math.floor(Math.random() * 255);
+            let g = Math.floor(Math.random() * 255);
+            let b = Math.floor(Math.random() * 255);
+            let color = 'rgba(' + r + ',' + g + ',' + b + ', 0.8)';
+            colors.push(color);
+        }
+
+        return colors;
+    };
+
+    const chart1 = document.getElementById('NrOfListingsPerNeighbourhood').getContext('2d');
+    const listingsPerNeighbourhoodChart = new Chart(chart1, {
+        type: 'pie',
+        data: {
+            labels: @Json.Serialize(Model.NeighbourhoodListings.Neighbourhoods),
+            datasets: [{
+                label: 'Amount of listings',
+                data: @Json.Serialize(Model.NeighbourhoodListings.NumberOfListings),
+                backgroundColor: generateColors(@Model.NeighbourhoodListings.Neighbourhoods.Count()),
+                hoverOffset: 4
+            }]
+        }
+    });
+
+    const chart2 = document.getElementById('averagePricePerNeighbourhood').getContext('2d');
+    const averageNeighbourhoodPriceChart = new Chart(chart2, {
+        type: 'bar',
+        data: {
+            labels: @Json.Serialize(Model.NeighbourhoodPrices.Neighbourhoods),
+            datasets: [{
+                label: 'Average Price',
+                data: @Json.Serialize(Model.NeighbourhoodPrices.AveragePrices),
+                backgroundColor: generateColors(@Model.NeighbourhoodPrices.Neighbourhoods.Count()),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const chart3 = document.getElementById('NrOfListingsPerRoomType').getContext('2d');
+    const listingsPerRoomTypeChart = new Chart(chart3, {
+        type: 'pie',
+        data: {
+            labels: @Json.Serialize(Model.RoomListings.RoomTypes),
+            datasets: [{
+                label: 'Amount of listings',
+                data: @Json.Serialize(Model.RoomListings.NumberOfListings),
+                backgroundColor: generateColors(@Model.RoomListings.RoomTypes.Count()),
+                hoverOffset: 4
+            }]
+        }
+    });
+
+    const chart4 = document.getElementById('NrOfReviewsPerYear').getContext('2d');
+    const reviewsPerYearChart = new Chart(chart4, {
+        type: 'line',
+        data: {
+            labels: @Json.Serialize(Model.YearReviews.Years),
+            datasets: [{
+                label: 'Amount of reviews',
+                data: @Json.Serialize(Model.YearReviews.NumberOfReviews),
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        }
+    });
+</script>

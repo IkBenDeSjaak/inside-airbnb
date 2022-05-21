@@ -3,5 +3,8 @@
     public class StatisticsViewModel
     {
         public NeighbourhoodPrices NeighbourhoodPrices { get; set; }
+        public NeighbourhoodListings NeighbourhoodListings { get; set; }
+        public RoomListings RoomListings { get; set; }
+        public YearReviews YearReviews { get; set; }
     }
 }

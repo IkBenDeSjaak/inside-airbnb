@@ -15,12 +15,14 @@ namespace inside_airbnb.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IListingService _listingService;
         private readonly INeighbourhoodService _neighbourhoodService;
+        private readonly IReviewService _reviewService;
 
-        public HomeController(ILogger<HomeController> logger, IListingService listingService, INeighbourhoodService neighbourhoodService)
+        public HomeController(ILogger<HomeController> logger, IListingService listingService, INeighbourhoodService neighbourhoodService, IReviewService reviewService)
         {
             _logger = logger;
             _listingService = listingService;
             _neighbourhoodService = neighbourhoodService;
+            _reviewService = reviewService;
         }
 
         [AllowAnonymous]
@@ -51,11 +53,30 @@ namespace inside_airbnb.Controllers
                 Neighbourhoods = new SelectList(neighbourhoods),
                 SelectedListing = selectedListing,
                 Zoom = zoom,
-                Latitude = (double) currentLatitude,
-                Longitude = (double) currentLongitude
+                Latitude = (double)currentLatitude,
+                Longitude = (double)currentLongitude
             };
 
             return View(listingsVM);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Statistics()
+        {
+            NeighbourhoodPrices neighbourhoodPrices = _listingService.GetAveragePricePerNeighbourhood();
+            NeighbourhoodListings neighbourhoodListings = _listingService.GetNrOfListingsPerNeighbourhood();
+            RoomListings roomListings = _listingService.GetNrOfListingsPerRoomType();
+            YearReviews yearReviews = _reviewService.GetNrOfReviewsPerYear();
+
+            StatisticsViewModel statisticsVM = new()
+            {
+                NeighbourhoodPrices = neighbourhoodPrices,
+                NeighbourhoodListings = neighbourhoodListings,
+                RoomListings = roomListings,
+                YearReviews = yearReviews
+            };
+
+            return View(statisticsVM);
         }
 
         [AllowAnonymous]
