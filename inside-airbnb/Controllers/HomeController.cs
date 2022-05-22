@@ -29,9 +29,9 @@ namespace inside_airbnb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string? neighbourhood, int? minPrice, int? maxPrice, int? numberOfReviews, long selectedListingId, double? zoom, double? currentLongitude, double? currentLatitude)
         {
-            IEnumerable<ListingLocation> listings = await _listingService.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
+            List<ListingLocation> listings = await _listingService.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
             ListingInformation? selectedListing = await _listingService.GetListingByID(selectedListingId);
-            IEnumerable<string> neighbourhoods = await _neighbourhoodService.GetNeighbourhoods();
+            List<string> neighbourhoods = await _neighbourhoodService.GetNeighbourhoods();
             FeatureCollection featureCollection = ConvertListingsToFeatureCollection(listings);
 
             if (zoom == null)
@@ -47,7 +47,7 @@ namespace inside_airbnb.Controllers
                 currentLatitude = 52.37851665631290;
             }
 
-            ListingsViewModel listingsVM = new()
+            MapViewModel listingsVM = new()
             {
                 Listings = featureCollection,
                 Neighbourhoods = new SelectList(neighbourhoods),

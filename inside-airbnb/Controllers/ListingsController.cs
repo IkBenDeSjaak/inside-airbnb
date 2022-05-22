@@ -28,9 +28,17 @@ namespace inside_airbnb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int? pageNumber)
         {
-            IEnumerable<ListingLocation> listings = await _listingsService.GetListings(null, null, null, null);
+            List<ListingLocation> listings = await _listingsService.GetListingsFromPage(pageNumber);
+            int listingCount = await _listingsService.GetAmountOfListings();
 
-            return View(listings);
+            if (pageNumber == null)
+            {
+                pageNumber = 1;
+            }
+
+            ListingsViewModel listingsVM = new(listings, (int)pageNumber, listingCount);
+
+            return View(listingsVM);
         }
 
         [AllowAnonymous]

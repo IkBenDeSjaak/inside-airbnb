@@ -1,4 +1,4 @@
-﻿@model IEnumerable<inside_airbnb.Models.ListingLocation>
+﻿@model inside_airbnb.Models.ViewModels.ListingsViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -10,19 +10,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Listings[0].Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Latitude)
+                @Html.DisplayNameFor(model => model.Listings[0].Latitude)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Longitude)
+                @Html.DisplayNameFor(model => model.Listings[0].Longitude)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Listings)
         {
             <tr>
                 <td>
@@ -41,3 +41,18 @@
         }
     </tbody>
 </table>
+@{
+    string prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    string nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageNumber - 1)"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageNumber + 1)"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

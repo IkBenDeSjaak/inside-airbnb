@@ -1,6 +1,7 @@
 ﻿using inside_airbnb.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using System.Linq;
 
 namespace inside_airbnb.Services
 {
@@ -13,7 +14,7 @@ namespace inside_airbnb.Services
             _dbSet = context.Set<Listing>();
         }
 
-        public async Task<IEnumerable<ListingLocation>> GetListings(string? neighbourhood, int? minPrice, int? maxPrice, int? nrOfReviews)
+        public async Task<List<ListingLocation>> GetListings(string? neighbourhood, int? minPrice, int? maxPrice, int? nrOfReviews)
         {
             IQueryable<ListingLocation> listings = _dbSet
                 .Select(listing => new ListingLocation
@@ -54,7 +55,7 @@ namespace inside_airbnb.Services
                     Longitude = listing.Longitude
                 });
 
-            IEnumerable<ListingLocation> listingLocations = await listings.ToListAsync();
+            List<ListingLocation> listingLocations = await listings.ToListAsync();
 
             foreach (ListingLocation listing in listingLocations)
             {
@@ -64,6 +65,42 @@ namespace inside_airbnb.Services
             }
 
             return listingLocations;
+        }
+
+        public async Task<List<ListingLocation>> GetListingsFromPage(int? pageNumber)
+        {
+            int pageSize = 200;
+
+            IQueryable<ListingLocation> listings = _dbSet.
+                Select(listing => new ListingLocation
+                {
+                    Id = listing.Id,
+                    Latitude = listing.Latitude,
+                    Longitude = listing.Longitude
+                });
+
+            if (pageNumber != null)
+            {
+                listings = listings.Skip((int)((pageNumber - 1) * pageSize));
+            }
+
+            listings = listings.Take(pageSize);
+
+            List<ListingLocation> listingLocations = await listings.ToListAsync();
+
+            foreach (ListingLocation listing in listingLocations)
+            {
+                // Because points are missing in latitude and longitude coördinates (Amsterdam is at about 52.3 and 4.8)
+                listing.Latitude = ConvertLatitude(listing.Latitude);
+                listing.Longitude = ConvertLongitude(listing.Longitude);
+            }
+
+            return listingLocations;
+        }
+
+        public async Task<int> GetAmountOfListings()
+        {
+            return await _dbSet.CountAsync();
         }
 
         public async Task<ListingInformation?> GetListingByID(long listingId)

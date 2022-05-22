@@ -12,7 +12,7 @@ namespace inside_airbnb.Services
             _dbSet = context.Set<Neighbourhood>();
         }
 
-        public async Task<IEnumerable<string>> GetNeighbourhoods()
+        public async Task<List<string>> GetNeighbourhoods()
         {
             IQueryable<string> neighbourhoods = _dbSet.Select(neighbourhood => neighbourhood.Neighbourhood1);
 

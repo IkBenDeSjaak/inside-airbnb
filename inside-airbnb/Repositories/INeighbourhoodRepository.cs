@@ -4,6 +4,6 @@ namespace inside_airbnb.Services
 {
     public interface INeighbourhoodRepository
     {
-        Task<IEnumerable<string>> GetNeighbourhoods();
+        Task<List<string>> GetNeighbourhoods();
     }
 }
