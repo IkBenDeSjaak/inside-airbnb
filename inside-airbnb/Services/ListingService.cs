@@ -68,83 +68,78 @@ namespace inside_airbnb.Services
 
         public async Task<ListingInformation?> GetListingByID(long listingId)
         {
-            Listing? listing = await _dbSet.FindAsync(listingId);
-
-            if (listing != null)
+            ListingInformation? listing = await _dbSet.Select(listing => new ListingInformation
             {
-                return new ListingInformation()
-                {
-                    Latitude = ConvertLatitude(listing.Latitude),
-                    Longitude = ConvertLongitude(listing.Longitude),
-                    Bathrooms = listing?.Bathrooms,
-                    Bedrooms = listing?.Bedrooms,
-                    Beds = listing?.Beds,
-                    HostName = listing.HostName,
-                    Id = listing.Id,
-                    Name = listing.Name,
-                    Neighbourhood = listing.NeighbourhoodCleansed,
-                    NumberOfReviews = listing.NumberOfReviews,
-                    Price = listing.Price,
-                    PropertyType = listing.PropertyType,
-                    RoomType = listing.RoomType
-                };
-            }
-            else
+                Latitude = listing.Latitude,
+                Longitude = listing.Longitude,
+                Bathrooms = listing.Bathrooms,
+                Bedrooms = listing.Bedrooms,
+                Beds = listing.Beds,
+                HostName = listing.HostName,
+                Id = listing.Id,
+                Name = listing.Name,
+                Neighbourhood = listing.NeighbourhoodCleansed,
+                NumberOfReviews = listing.NumberOfReviews,
+                Price = listing.Price,
+                PropertyType = listing.PropertyType,
+                RoomType = listing.RoomType
+            }).FirstOrDefaultAsync(x => x.Id == listingId);
+
+            if (listing == null)
             {
                 return null;
             }
+
+            listing.Latitude = ConvertLatitude(listing.Latitude);
+            listing.Longitude = ConvertLongitude(listing.Longitude);
+
+            return listing;
         }
 
         public async Task<NeighbourhoodPrices> GetAveragePricePerNeighbourhood()
         {
-            NeighbourhoodPrices neighbourhoodPrices = new();
-
             var pricePerNeighbourhood = await _dbSet.
                 GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Price, (key, prices) => new { Neighbourhood = key, AveragePrice = Math.Round(prices.Average(), 2) }).
                 OrderBy(neighbourhood => neighbourhood.Neighbourhood).
                 ToListAsync();
 
-            foreach (var neighbourhood in pricePerNeighbourhood)
+            NeighbourhoodPrices neighbourhoodPrices = new()
             {
-                neighbourhoodPrices.Neighbourhoods.Add(neighbourhood.Neighbourhood);
-                neighbourhoodPrices.AveragePrices.Add(neighbourhood.AveragePrice);
-            }
+                Neighbourhoods = pricePerNeighbourhood.Select(neighbourhood => neighbourhood.Neighbourhood).ToList(),
+                AveragePrices = pricePerNeighbourhood.Select(neighbourhood => neighbourhood.AveragePrice).ToList()
+            };
 
             return neighbourhoodPrices;
         }
 
         public async Task<NeighbourhoodListings> GetNrOfListingsPerNeighbourhood()
         {
-            NeighbourhoodListings neighbourhoodListings = new();
-
             var listingsPerNeighbourhood = await _dbSet.
                 GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Id, (key, ids) => new { Neighbourhood = key, NrOfListings = ids.Count() }).
                 OrderBy(neighbourhood => neighbourhood.NrOfListings).
                 ToListAsync();
 
-            foreach (var neighbourhood in listingsPerNeighbourhood)
+            NeighbourhoodListings neighbourhoodListings = new()
             {
-                neighbourhoodListings.Neighbourhoods.Add(neighbourhood.Neighbourhood);
-                neighbourhoodListings.NumberOfListings.Add(neighbourhood.NrOfListings);
-            }
+                Neighbourhoods = listingsPerNeighbourhood.Select(neighbourhood => neighbourhood.Neighbourhood).ToList(),
+                NumberOfListings = listingsPerNeighbourhood.Select(neighbourhood => neighbourhood.NrOfListings).ToList()
+            };
 
             return neighbourhoodListings;
         }
 
         public async Task<RoomListings> GetNrOfListingsPerRoomType()
         {
-            RoomListings roomListings = new();
-
             var listingsPerPropertyType = await _dbSet.
                 GroupBy(listing => listing.RoomType, listing => listing.Id, (key, ids) => new { RoomType = key, NrOfListings = ids.Count() }).
                 OrderBy(neighbourhood => neighbourhood.NrOfListings).
                 ToListAsync();
 
-            foreach (var property in listingsPerPropertyType)
+            RoomListings roomListings = new()
             {
-                roomListings.RoomTypes.Add(property.RoomType);
-                roomListings.NumberOfListings.Add(property.NrOfListings);
-            }
+                RoomTypes = listingsPerPropertyType.Select(room => room.RoomType).ToList(),
+                NumberOfListings = listingsPerPropertyType.Select(room => room.NrOfListings).ToList()
+            };
 
             return roomListings;
         }
