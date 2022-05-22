@@ -98,10 +98,10 @@ namespace inside_airbnb.Services
 
         public async Task<NeighbourhoodPrices> GetAveragePricePerNeighbourhood()
         {
-            var pricePerNeighbourhood = await _dbSet.
-                GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Price, (key, prices) => new { Neighbourhood = key, AveragePrice = Math.Round(prices.Average(), 2) }).
-                OrderBy(neighbourhood => neighbourhood.Neighbourhood).
-                ToListAsync();
+            var pricePerNeighbourhood = await _dbSet
+                .GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Price, (key, prices) => new { Neighbourhood = key, AveragePrice = Math.Round(prices.Average(), 2) })
+                .OrderBy(neighbourhood => neighbourhood.Neighbourhood)
+                .ToListAsync();
 
             NeighbourhoodPrices neighbourhoodPrices = new()
             {
@@ -114,10 +114,10 @@ namespace inside_airbnb.Services
 
         public async Task<NeighbourhoodListings> GetNrOfListingsPerNeighbourhood()
         {
-            var listingsPerNeighbourhood = await _dbSet.
-                GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Id, (key, ids) => new { Neighbourhood = key, NrOfListings = ids.Count() }).
-                OrderBy(neighbourhood => neighbourhood.NrOfListings).
-                ToListAsync();
+            var listingsPerNeighbourhood = await _dbSet
+                .GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Id, (key, ids) => new { Neighbourhood = key, NrOfListings = ids.Count() })
+                .OrderBy(neighbourhood => neighbourhood.NrOfListings)
+                .ToListAsync();
 
             NeighbourhoodListings neighbourhoodListings = new()
             {
@@ -130,10 +130,10 @@ namespace inside_airbnb.Services
 
         public async Task<RoomListings> GetNrOfListingsPerRoomType()
         {
-            var listingsPerPropertyType = await _dbSet.
-                GroupBy(listing => listing.RoomType, listing => listing.Id, (key, ids) => new { RoomType = key, NrOfListings = ids.Count() }).
-                OrderBy(neighbourhood => neighbourhood.NrOfListings).
-                ToListAsync();
+            var listingsPerPropertyType = await _dbSet
+                .GroupBy(listing => listing.RoomType, listing => listing.Id, (key, ids) => new { RoomType = key, NrOfListings = ids.Count() })
+                .OrderBy(neighbourhood => neighbourhood.NrOfListings)
+                .ToListAsync();
 
             RoomListings roomListings = new()
             {

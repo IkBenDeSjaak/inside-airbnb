@@ -14,10 +14,10 @@ namespace inside_airbnb.Services
 
         public async Task<YearReviews> GetNrOfReviewsPerYear()
         {
-            var reviewsPerYear = await _dbSet.
-                GroupBy(review => review.Date.Year, listing => listing.Id, (key, ids) => new { Year = key, NrOfReviews = ids.Count() }).
-                OrderBy(date => date.Year).
-                ToListAsync();
+            var reviewsPerYear = await _dbSet
+                .GroupBy(review => review.Date.Year, listing => listing.Id, (key, ids) => new { Year = key, NrOfReviews = ids.Count() })
+                .OrderBy(date => date.Year)
+                .ToListAsync();
 
             YearReviews yearReviews = new()
             {

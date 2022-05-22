@@ -53,8 +53,8 @@ namespace inside_airbnb.Controllers
                 Neighbourhoods = new SelectList(neighbourhoods),
                 SelectedListing = selectedListing,
                 Zoom = zoom,
-                Latitude = (double)currentLatitude,
-                Longitude = (double)currentLongitude
+                Latitude = currentLatitude,
+                Longitude = currentLongitude
             };
 
             return View(listingsVM);
@@ -95,7 +95,7 @@ namespace inside_airbnb.Controllers
 
         public FeatureCollection ConvertListingsToFeatureCollection(IEnumerable<ListingLocation> listings)
         {
-            FeatureCollection featureCollection = new FeatureCollection();
+            FeatureCollection featureCollection = new();
 
             foreach (ListingLocation listing in listings)
             {
