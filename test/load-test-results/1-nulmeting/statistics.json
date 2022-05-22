@@ -1,0 +1,34 @@
+{
+  "https://localhost:44313/Listings/" : {
+    "transaction" : "https://localhost:44313/Listings/",
+    "sampleCount" : 1075,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 3464.7144186046535,
+    "medianResTime" : 2079.0,
+    "minResTime" : 103.0,
+    "maxResTime" : 10239.0,
+    "pct1ResTime" : 8425.0,
+    "pct2ResTime" : 8869.0,
+    "pct3ResTime" : 9331.2,
+    "throughput" : 24.473534433693796,
+    "receivedKBytesPerSec" : 1913.0571019493457,
+    "sentKBytesPerSec" : 3.083091740182129
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 1075,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 3464.7144186046535,
+    "medianResTime" : 2079.0,
+    "minResTime" : 103.0,
+    "maxResTime" : 10239.0,
+    "pct1ResTime" : 8425.0,
+    "pct2ResTime" : 8869.0,
+    "pct3ResTime" : 9331.2,
+    "throughput" : 24.473534433693796,
+    "receivedKBytesPerSec" : 1913.0571019493457,
+    "sentKBytesPerSec" : 3.083091740182129
+  }
+}

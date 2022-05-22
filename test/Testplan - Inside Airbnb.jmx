@@ -14,7 +14,7 @@
       <com.blazemeter.jmeter.threads.arrivals.ArrivalsThreadGroup guiclass="com.blazemeter.jmeter.threads.arrivals.ArrivalsThreadGroupGui" testclass="com.blazemeter.jmeter.threads.arrivals.ArrivalsThreadGroup" testname="Inside Airbnb - Arrivals Thread Group" enabled="true">
         <elementProp name="ThreadGroup.main_controller" elementType="com.blazemeter.jmeter.control.VirtualUserController"/>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <stringProp name="TargetLevel">80</stringProp>
+        <stringProp name="TargetLevel">50</stringProp>
         <stringProp name="RampUp">30</stringProp>
         <stringProp name="Steps">10</stringProp>
         <stringProp name="Hold">5</stringProp>
