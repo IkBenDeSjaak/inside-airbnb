@@ -20,6 +20,13 @@ builder.Services.AddScoped<IListingService, ListingService>();
 builder.Services.AddScoped<INeighbourhoodService, NeighbourhoodService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 
+builder.Services.
+    AddMiniProfiler(options =>
+    {
+        options.PopupRenderPosition = StackExchange.Profiling.RenderPosition.BottomLeft;
+        options.PopupShowTimeWithChildren = true;
+    }).AddEntityFramework();
+
 builder.Services.AddControllersWithViews(options =>
 {
     var policy = new AuthorizationPolicyBuilder()
@@ -29,10 +36,6 @@ builder.Services.AddControllersWithViews(options =>
 });
 builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
-
-//Configuring appsettings section AzureAdB2C, into IOptions
-//builder.Services.AddOptions();
-//builder.Services.Configure<OpenIdConnectOptions>(builder.Configuration.GetSection("AzureAd"));
 
 var app = builder.Build();
 
@@ -46,6 +49,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseMiniProfiler();
 
 app.UseRouting();
 
