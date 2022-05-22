@@ -4,11 +4,11 @@ using System.Globalization;
 
 namespace inside_airbnb.Services
 {
-    public class ListingService : IListingService
+    public class ListingRepository : IListingRepository
     {
         private readonly DbSet<Listing> _dbSet;
 
-        public ListingService(InsideAirbnbContext context)
+        public ListingRepository(InsideAirbnbContext context)
         {
             _dbSet = context.Set<Listing>();
         }

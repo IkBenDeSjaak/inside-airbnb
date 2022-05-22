@@ -13,11 +13,11 @@ namespace inside_airbnb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IListingService _listingService;
-        private readonly INeighbourhoodService _neighbourhoodService;
-        private readonly IReviewService _reviewService;
+        private readonly IListingRepository _listingService;
+        private readonly INeighbourhoodRepository _neighbourhoodService;
+        private readonly IReviewRepository _reviewService;
 
-        public HomeController(ILogger<HomeController> logger, IListingService listingService, INeighbourhoodService neighbourhoodService, IReviewService reviewService)
+        public HomeController(ILogger<HomeController> logger, IListingRepository listingService, INeighbourhoodRepository neighbourhoodService, IReviewRepository reviewService)
         {
             _logger = logger;
             _listingService = listingService;

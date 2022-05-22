@@ -17,18 +17,19 @@ namespace inside_airbnb.Controllers
     [Authorize]
     public class ListingsController : Controller
     {
-        private readonly IListingService _listingsService;
+        private readonly IListingRepository _listingsService;
 
-        public ListingsController(IListingService listingsService)
+        public ListingsController(IListingRepository listingsService)
         {
             _listingsService = listingsService;
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             IEnumerable<ListingLocation> listings = await _listingsService.GetListings(null, null, null, null);
+
             return View(listings);
         }
 

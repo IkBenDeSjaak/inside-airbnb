@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace inside_airbnb.Services
 {
-    public class ReviewService : IReviewService
+    public class ReviewRepository : IReviewRepository
     {
         private readonly DbSet<Review> _dbSet;
 
-        public ReviewService(InsideAirbnbContext context)
+        public ReviewRepository(InsideAirbnbContext context)
         {
             _dbSet = context.Set<Review>();
         }

@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace inside_airbnb.Services
 {
-    public class NeighbourhoodService : INeighbourhoodService
+    public class NeighbourhoodRepository : INeighbourhoodRepository
     {
         private readonly DbSet<Neighbourhood> _dbSet;
 
-        public NeighbourhoodService(InsideAirbnbContext context)
+        public NeighbourhoodRepository(InsideAirbnbContext context)
         {
             _dbSet = context.Set<Neighbourhood>();
         }

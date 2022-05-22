@@ -16,9 +16,9 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 
 builder.Services.AddDbContext<InsideAirbnbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("default") ?? throw new InvalidOperationException("Connection string 'default' not found.")));
-builder.Services.AddScoped<IListingService, ListingService>();
-builder.Services.AddScoped<INeighbourhoodService, NeighbourhoodService>();
-builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IListingRepository, ListingRepository>();
+builder.Services.AddScoped<INeighbourhoodRepository, NeighbourhoodRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 builder.Services.
     AddMiniProfiler(options =>
