@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace inside_airbnb.Models.ViewModels
 {
-    public class ListingsViewModel
+    public class MapViewModel
     {
         public FeatureCollection? Listings { get; set; }
         public SelectList? Neighbourhoods { get; set; }
