@@ -142,6 +142,16 @@
             newurl.searchParams.set('CurrentLatitude', currentLatitude);
             window.location = newurl;
         });
+
+        map.on('mouseenter', 'points', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', 'points', () => {
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.addControl(new mapboxgl.NavigationControl());
     })
 </script>
 
