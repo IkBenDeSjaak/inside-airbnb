@@ -12,12 +12,13 @@ namespace inside_airbnb.Services
             _dbSet = context.Set<Review>();
         }
 
-        public YearReviews GetNrOfReviewsPerYear()
+        public async Task<YearReviews> GetNrOfReviewsPerYear()
         {
             YearReviews yearReviews = new();
-            var reviewsPerYear = _dbSet.
+            var reviewsPerYear = await _dbSet.
                 GroupBy(review => review.Date.Year, listing => listing.Id, (key, ids) => new { Year = key, NrOfReviews = ids.Count() }).
-                OrderBy(date => date.Year);
+                OrderBy(date => date.Year).
+                ToListAsync();
 
             foreach (var year in reviewsPerYear)
             {

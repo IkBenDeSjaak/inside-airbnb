@@ -4,6 +4,6 @@ namespace inside_airbnb.Services
 {
     public interface IReviewService
     {
-        YearReviews GetNrOfReviewsPerYear();
+        Task<YearReviews> GetNrOfReviewsPerYear();
     }
 }

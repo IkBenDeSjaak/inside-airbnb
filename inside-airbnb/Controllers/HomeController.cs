@@ -63,10 +63,10 @@ namespace inside_airbnb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Statistics()
         {
-            NeighbourhoodPrices neighbourhoodPrices = _listingService.GetAveragePricePerNeighbourhood();
-            NeighbourhoodListings neighbourhoodListings = _listingService.GetNrOfListingsPerNeighbourhood();
-            RoomListings roomListings = _listingService.GetNrOfListingsPerRoomType();
-            YearReviews yearReviews = _reviewService.GetNrOfReviewsPerYear();
+            NeighbourhoodPrices neighbourhoodPrices = await _listingService.GetAveragePricePerNeighbourhood();
+            NeighbourhoodListings neighbourhoodListings = await _listingService.GetNrOfListingsPerNeighbourhood();
+            RoomListings roomListings = await _listingService.GetNrOfListingsPerRoomType();
+            YearReviews yearReviews = await _reviewService.GetNrOfReviewsPerYear();
 
             StatisticsViewModel statisticsVM = new()
             {
