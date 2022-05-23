@@ -17,6 +17,7 @@ namespace inside_airbnb.Services
             var reviewsPerYear = await _dbSet
                 .GroupBy(review => review.Date.Year, listing => listing.Id, (key, ids) => new { Year = key, NrOfReviews = ids.Count() })
                 .OrderBy(date => date.Year)
+                .AsNoTracking()
                 .ToListAsync();
 
             YearReviews yearReviews = new()

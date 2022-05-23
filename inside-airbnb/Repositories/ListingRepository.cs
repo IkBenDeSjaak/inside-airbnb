@@ -55,7 +55,7 @@ namespace inside_airbnb.Services
                     Longitude = listing.Longitude
                 });
 
-            List<ListingLocation> listingLocations = await listings.ToListAsync();
+            List<ListingLocation> listingLocations = await listings.AsNoTracking().ToListAsync();
 
             foreach (ListingLocation listing in listingLocations)
             {
@@ -86,7 +86,7 @@ namespace inside_airbnb.Services
 
             listings = listings.Take(pageSize);
 
-            List<ListingLocation> listingLocations = await listings.ToListAsync();
+            List<ListingLocation> listingLocations = await listings.AsNoTracking().ToListAsync();
 
             foreach (ListingLocation listing in listingLocations)
             {
@@ -100,27 +100,30 @@ namespace inside_airbnb.Services
 
         public async Task<int> GetAmountOfListings()
         {
-            return await _dbSet.CountAsync();
+            return await _dbSet.AsNoTracking().CountAsync();
         }
 
         public async Task<ListingInformation?> GetListingByID(long listingId)
         {
-            ListingInformation? listing = await _dbSet.Select(listing => new ListingInformation
-            {
-                Latitude = listing.Latitude,
-                Longitude = listing.Longitude,
-                Bathrooms = listing.Bathrooms,
-                Bedrooms = listing.Bedrooms,
-                Beds = listing.Beds,
-                HostName = listing.HostName,
-                Id = listing.Id,
-                Name = listing.Name,
-                Neighbourhood = listing.NeighbourhoodCleansed,
-                NumberOfReviews = listing.NumberOfReviews,
-                Price = listing.Price,
-                PropertyType = listing.PropertyType,
-                RoomType = listing.RoomType
-            }).FirstOrDefaultAsync(x => x.Id == listingId);
+            ListingInformation? listing = await _dbSet
+                .Select(listing => new ListingInformation
+                {
+                    Latitude = listing.Latitude,
+                    Longitude = listing.Longitude,
+                    Bathrooms = listing.Bathrooms,
+                    Bedrooms = listing.Bedrooms,
+                    Beds = listing.Beds,
+                    HostName = listing.HostName,
+                    Id = listing.Id,
+                    Name = listing.Name,
+                    Neighbourhood = listing.NeighbourhoodCleansed,
+                    NumberOfReviews = listing.NumberOfReviews,
+                    Price = listing.Price,
+                    PropertyType = listing.PropertyType,
+                    RoomType = listing.RoomType
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == listingId);
 
             if (listing == null)
             {
@@ -138,6 +141,7 @@ namespace inside_airbnb.Services
             var pricePerNeighbourhood = await _dbSet
                 .GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Price, (key, prices) => new { Neighbourhood = key, AveragePrice = Math.Round(prices.Average(), 2) })
                 .OrderBy(neighbourhood => neighbourhood.Neighbourhood)
+                .AsNoTracking()
                 .ToListAsync();
 
             NeighbourhoodPrices neighbourhoodPrices = new()
@@ -154,6 +158,7 @@ namespace inside_airbnb.Services
             var listingsPerNeighbourhood = await _dbSet
                 .GroupBy(listing => listing.NeighbourhoodCleansed, listing => listing.Id, (key, ids) => new { Neighbourhood = key, NrOfListings = ids.Count() })
                 .OrderBy(neighbourhood => neighbourhood.NrOfListings)
+                .AsNoTracking()
                 .ToListAsync();
 
             NeighbourhoodListings neighbourhoodListings = new()
@@ -170,6 +175,7 @@ namespace inside_airbnb.Services
             var listingsPerPropertyType = await _dbSet
                 .GroupBy(listing => listing.RoomType, listing => listing.Id, (key, ids) => new { RoomType = key, NrOfListings = ids.Count() })
                 .OrderBy(neighbourhood => neighbourhood.NrOfListings)
+                .AsNoTracking()
                 .ToListAsync();
 
             RoomListings roomListings = new()

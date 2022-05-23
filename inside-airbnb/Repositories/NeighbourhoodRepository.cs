@@ -16,7 +16,7 @@ namespace inside_airbnb.Services
         {
             IQueryable<string> neighbourhoods = _dbSet.Select(neighbourhood => neighbourhood.Neighbourhood1);
 
-            return await neighbourhoods.ToListAsync();
+            return await neighbourhoods.AsNoTracking().ToListAsync();
         }
     }
 }
