@@ -17,19 +17,19 @@ namespace inside_airbnb.Controllers
     [Authorize]
     public class ListingsController : Controller
     {
-        private readonly IListingRepository _listingsService;
+        private readonly IListingRepository _listingRepository;
 
-        public ListingsController(IListingRepository listingsService)
+        public ListingsController(IListingRepository listingRepository)
         {
-            _listingsService = listingsService;
+            _listingRepository = listingRepository;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index(int? pageNumber)
         {
-            List<ListingLocation> listings = await _listingsService.GetListingsFromPage(pageNumber);
-            int listingCount = await _listingsService.GetAmountOfListings();
+            List<ListingLocation> listings = await _listingRepository.GetListingsFromPage(pageNumber);
+            int listingCount = await _listingRepository.GetAmountOfListings();
 
             if (pageNumber == null)
             {
@@ -45,7 +45,7 @@ namespace inside_airbnb.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(long id)
         {
-            ListingInformation listing = await _listingsService.GetListingByID(id);
+            ListingInformation listing = await _listingRepository.GetListingByID(id);
 
             if (listing == null)
             {
