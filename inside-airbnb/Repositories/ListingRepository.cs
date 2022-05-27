@@ -77,7 +77,8 @@ namespace inside_airbnb.Services
                     Id = listing.Id,
                     Latitude = listing.Latitude,
                     Longitude = listing.Longitude
-                });
+                })
+                .OrderBy(listing => listing.Id);
 
             if (pageNumber != null)
             {
