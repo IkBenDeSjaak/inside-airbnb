@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -16,6 +17,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 
 builder.Services.AddDbContext<InsideAirbnbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("default") ?? throw new InvalidOperationException("Connection string 'default' not found.")));
+
 builder.Services.AddScoped<IListingRepository, ListingRepository>();
 builder.Services.AddScoped<INeighbourhoodRepository, NeighbourhoodRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
@@ -34,6 +36,13 @@ builder.Services.AddControllersWithViews(options =>
         .Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = "localhost:6379";
+    options.InstanceName = "InsideAirbnb";
+});
+
 builder.Services.AddRazorPages()
     .AddMicrosoftIdentityUI();
 

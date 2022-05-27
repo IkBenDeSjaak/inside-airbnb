@@ -13,7 +13,8 @@
                 <div class="col-10">
                     <div class="row row-cols-2">
                         <div class="col d-flex justify-content-between">
-                            <label asp-for="Neighbourhood">Neighbourhood:</label><select name="Neighbourhood" asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
+                            <label asp-for="Neighbourhood">Neighbourhood:</label>
+                            <select name="Neighbourhood" asp-for="Neighbourhood" asp-items="Model.Neighbourhoods">
                                 <option value="">All</option>
                             </select>
                         </div>
@@ -55,7 +56,6 @@
         }
     </div>
 </div>
-
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
 <script>
