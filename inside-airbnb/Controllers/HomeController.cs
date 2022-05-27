@@ -55,7 +55,7 @@ namespace inside_airbnb.Controllers
             {
                 listings = await _listingRepository.GetListings(neighbourhood, minPrice, maxPrice, numberOfReviews);
 
-                await _distributedCache.AddDataToCache($"{CacheKeyListings}-{neighbourhood}-{minPrice}-{maxPrice}-{numberOfReviews}", listings, 10);
+                await _distributedCache.AddDataToCache($"{CacheKeyListings}-{neighbourhood}-{minPrice}-{maxPrice}-{numberOfReviews}", listings, 100);
             }
 
             if (!string.IsNullOrEmpty(cachedNeighbourhoodsString))
@@ -66,7 +66,7 @@ namespace inside_airbnb.Controllers
             {
                 neighbourhoods = await _neighbourhoodRepository.GetNeighbourhoods();
 
-                await _distributedCache.AddDataToCache(CacheKeyNeighbourhoods, neighbourhoods, 5);
+                await _distributedCache.AddDataToCache(CacheKeyNeighbourhoods, neighbourhoods, 100);
             }
 
             FeatureCollection featureCollection = ConvertListingsToFeatureCollection(listings);
@@ -118,7 +118,7 @@ namespace inside_airbnb.Controllers
             {
                 neighbourhoodPrices = await _listingRepository.GetAveragePricePerNeighbourhood();
 
-                await _distributedCache.AddDataToCache(CacheKeyNeighbourhoodPrices, neighbourhoodPrices, 5);
+                await _distributedCache.AddDataToCache(CacheKeyNeighbourhoodPrices, neighbourhoodPrices, 100);
             }
 
             if (!string.IsNullOrEmpty(cachedNeighbourhoodListingsString))
@@ -129,7 +129,7 @@ namespace inside_airbnb.Controllers
             {
                 neighbourhoodListings = await _listingRepository.GetNrOfListingsPerNeighbourhood();
 
-                await _distributedCache.AddDataToCache(CacheKeyNeighbourhoodListings, neighbourhoodListings, 5);
+                await _distributedCache.AddDataToCache(CacheKeyNeighbourhoodListings, neighbourhoodListings, 100);
             }
 
             if (!string.IsNullOrEmpty(cachedRoomListingsString))
@@ -140,7 +140,7 @@ namespace inside_airbnb.Controllers
             {
                 roomListings = await _listingRepository.GetNrOfListingsPerRoomType();
 
-                await _distributedCache.AddDataToCache(CacheKeyRoomListings, roomListings, 5);
+                await _distributedCache.AddDataToCache(CacheKeyRoomListings, roomListings, 100);
             }
 
             if (!string.IsNullOrEmpty(cachedYearReviewsString))
@@ -151,7 +151,7 @@ namespace inside_airbnb.Controllers
             {
                 yearReviews = await _reviewRepository.GetNrOfReviewsPerYear();
 
-                await _distributedCache.AddDataToCache(CacheKeyYearReviews, yearReviews, 5);
+                await _distributedCache.AddDataToCache(CacheKeyYearReviews, yearReviews, 100);
             }
 
             StatisticsViewModel statisticsVM = new()

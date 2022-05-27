@@ -22,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        <distributed-cache name="listings-page-@Model.PageNumber" expires-after="@TimeSpan.FromSeconds(10)">
+        <distributed-cache name="listings-page-@Model.PageNumber" expires-after="@TimeSpan.FromSeconds(100)">
             @foreach (var item in Model.Listings)
             {
                 <tr>
