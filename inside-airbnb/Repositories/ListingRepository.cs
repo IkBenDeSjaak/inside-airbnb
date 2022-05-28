@@ -80,7 +80,7 @@ namespace inside_airbnb.Services
                 })
                 .OrderBy(listing => listing.Id);
 
-            if (pageNumber != null)
+            if (pageNumber != null && pageNumber > 0)
             {
                 listings = listings.Skip((int)((pageNumber - 1) * pageSize));
             }

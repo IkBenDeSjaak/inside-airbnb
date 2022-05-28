@@ -39,8 +39,7 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = "localhost:6379";
-    options.InstanceName = "InsideAirbnb";
+    options.Configuration = builder.Configuration.GetConnectionString("redis");
 });
 
 builder.Services.AddRazorPages()
@@ -72,6 +71,14 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("X-Frame-Options", "Deny");
+    context.Response.Headers.Add("Content-Security-Policy", "default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js 'unsafe-inline' https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js; connect-src 'self' https://*.tiles.mapbox.com https://api.mapbox.com https://events.mapbox.com; img-src 'self' data: blob: ; style-src 'self' 'unsafe-inline' https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; child-src blob: ; worker-src blob: ");
+
+    await next();
+});
 
 app.MapControllerRoute(
     name: "default",
