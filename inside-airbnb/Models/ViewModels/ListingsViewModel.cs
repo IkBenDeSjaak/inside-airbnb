@@ -8,7 +8,7 @@
             Listings = (List<ListingLocation>)listings;
             PageNumber = pageNumber;
             HasPreviousPage = pageNumber > 1;
-            HasNextPage = pageNumber < (int)Math.Ceiling(amountOfListings / (double) PageSize);
+            HasNextPage = pageNumber < (int)Math.Ceiling(amountOfListings / (double)PageSize);
         }
 
         public List<ListingLocation> Listings { get; set; }

@@ -1,11 +1,9 @@
 using inside_airbnb.Models;
 using inside_airbnb.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -16,7 +14,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddDbContext<InsideAirbnbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("default") ?? throw new InvalidOperationException("Connection string 'default' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("database") ?? throw new InvalidOperationException("Connection string 'default' not found.")));
 
 builder.Services.AddScoped<IListingRepository, ListingRepository>();
 builder.Services.AddScoped<INeighbourhoodRepository, NeighbourhoodRepository>();

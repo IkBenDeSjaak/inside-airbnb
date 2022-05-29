@@ -1,7 +1,6 @@
 ﻿using inside_airbnb.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Linq;
 
 namespace inside_airbnb.Services
 {

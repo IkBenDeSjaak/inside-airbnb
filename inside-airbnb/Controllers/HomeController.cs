@@ -1,14 +1,13 @@
-﻿using inside_airbnb.Models;
+﻿using inside_airbnb.Helpers;
+using inside_airbnb.Models;
 using inside_airbnb.Models.ViewModels;
+using inside_airbnb.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using inside_airbnb.Services;
-using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Diagnostics;
 using System.Text.Json;
-using inside_airbnb.Helpers;
 
 namespace inside_airbnb.Controllers
 {
