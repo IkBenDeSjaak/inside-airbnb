@@ -96,7 +96,7 @@ namespace inside_airbnb.Controllers
             return View(listingsVM);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Statistics()
         {
             NeighbourhoodPrices neighbourhoodPrices;
@@ -191,12 +191,12 @@ namespace inside_airbnb.Controllers
             return featureCollection;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> ClearCache(string key)
-        {
-            await _distributedCache.RemoveAsync(key);
-            return Ok(new { Message = $"Cleared cache for key -{key}" });
-        }
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public async Task<IActionResult> ClearCache(string key)
+        //{
+        //    await _distributedCache.RemoveAsync(key);
+        //    return Ok(new { Message = $"Cleared cache for key -{key}" });
+        //}
     }
 }
