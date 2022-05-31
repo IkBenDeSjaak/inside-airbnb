@@ -1,3 +1,4 @@
+using inside_airbnb.Cache;
 using inside_airbnb.Models;
 using inside_airbnb.Services;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -19,6 +20,14 @@ builder.Services.AddDbContext<InsideAirbnbContext>(options =>
 builder.Services.AddScoped<IListingRepository, ListingRepository>();
 builder.Services.AddScoped<INeighbourhoodRepository, NeighbourhoodRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+
+builder.Services.AddScoped<IListingService, ListingService>();
+builder.Services.AddScoped<INeighbourhoodService, NeighbourhoodService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
+
+builder.Services.AddScoped<IListingCache, ListingCache>();
+builder.Services.AddScoped<INeighbourhoodCache, NeighbourhoodCache>();
+builder.Services.AddScoped<IReviewCache, ReviewCache>();
 
 builder.Services.
     AddMiniProfiler(options =>

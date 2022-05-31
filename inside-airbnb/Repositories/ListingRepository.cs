@@ -66,7 +66,7 @@ namespace inside_airbnb.Services
             return listingLocations;
         }
 
-        public async Task<List<ListingLocation>> GetListingsFromPage(int? pageNumber)
+        public async Task<List<ListingLocation>> GetListingsFromPage(int pageNumber)
         {
             int pageSize = 200;
 
@@ -79,9 +79,9 @@ namespace inside_airbnb.Services
                 })
                 .OrderBy(listing => listing.Id);
 
-            if (pageNumber != null && pageNumber > 0)
+            if (pageNumber > 0)
             {
-                listings = listings.Skip((int)((pageNumber - 1) * pageSize));
+                listings = listings.Skip(((pageNumber - 1) * pageSize));
             }
 
             listings = listings.Take(pageSize);
