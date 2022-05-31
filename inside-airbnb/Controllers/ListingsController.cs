@@ -35,8 +35,6 @@ namespace inside_airbnb.Controllers
             List<ListingLocation> listings = await _listingService.GetListingsFromPage(page);
             int listingCount = await _listingService.GetAmountOfListings();
 
-
-
             ListingsViewModel listingsVM = new(listings, page, listingCount);
 
             return View(listingsVM);
