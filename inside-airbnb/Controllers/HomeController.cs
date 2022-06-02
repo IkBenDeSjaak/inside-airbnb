@@ -58,8 +58,7 @@ namespace inside_airbnb.Controllers
             return View(listingsVM);
         }
 
-        //[Authorize(Roles = "Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Statistics()
         {
             NeighbourhoodPrices neighbourhoodPrices = await _listingService.GetAveragePricePerNeighbourhood();
