@@ -67,6 +67,49 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSecurityHeaders(policies =>
+        policies
+            .AddContentSecurityPolicy(builder =>
+            {
+                builder.AddDefaultSrc()
+                    .None();
+
+                builder.AddScriptSrc()
+                    .Self()
+                    .From("https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js")
+                    .From("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js")
+                    .WithNonce();
+
+                builder.AddConnectSrc()
+                    .Self()
+                    .From("https://*.tiles.mapbox.com")
+                    .From("https://api.mapbox.com")
+                    .From("https://events.mapbox.com");
+
+                builder.AddImgSrc()
+                    .Self()
+                    .Data()
+                    .Blob();
+
+                builder.AddStyleSrc()
+                    .Self()
+                    .From("https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css")
+                    .UnsafeInline();
+
+                builder.AddBaseUri()
+                    .Self();
+
+                builder.AddFormAction()
+                    .Self();
+
+                builder.AddFrameAncestors()
+                    .None();
+
+                builder.AddWorkerSrc()
+                    .Blob();
+            })
+    );
+
 app.UseResponseCompression();
 
 app.UseHttpsRedirection();
@@ -81,7 +124,6 @@ app.UseAuthorization();
 
 app.Use(async (context, next) =>
 {
-    context.Response.Headers.Add("Content-Security-Policy", "default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js 'unsafe-inline' https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js; connect-src 'self' https://*.tiles.mapbox.com https://api.mapbox.com https://events.mapbox.com; img-src 'self' data: blob: ; style-src 'self' https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css 'unsafe-inline'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; child-src blob: ; worker-src blob: ");
     context.Response.Headers.Add("X-Frame-Options", "Deny");
 
     await next();
