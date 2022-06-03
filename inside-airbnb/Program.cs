@@ -29,12 +29,12 @@ builder.Services.AddScoped<IListingCache, ListingCache>();
 builder.Services.AddScoped<INeighbourhoodCache, NeighbourhoodCache>();
 builder.Services.AddScoped<IReviewCache, ReviewCache>();
 
-builder.Services.
-    AddMiniProfiler(options =>
-    {
-        options.PopupRenderPosition = StackExchange.Profiling.RenderPosition.BottomLeft;
-        options.PopupShowTimeWithChildren = true;
-    }).AddEntityFramework();
+//builder.Services.
+//    AddMiniProfiler(options =>
+//    {
+//        options.PopupRenderPosition = StackExchange.Profiling.RenderPosition.BottomLeft;
+//        options.PopupShowTimeWithChildren = true;
+//    }).AddEntityFramework();
 
 builder.Services.AddControllersWithViews(options =>
 {
